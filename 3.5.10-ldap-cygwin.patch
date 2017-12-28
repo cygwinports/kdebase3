@@ -1,0 +1,11 @@
+--- origsrc/kdebase-3.5.10/kioslave/ldap/configure.in.in	2005-10-10 10:04:01.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/ldap/configure.in.in	2017-12-27 03:01:43.949838600 -0600
+@@ -19,7 +19,7 @@
+   fi
+   if test $with_ldap = FOUND ; then
+     with_ldap=NOTFOUND
+-    for ext in la so sl a dylib ; do
++    for ext in la so sl dll.a a dylib ; do
+       AC_FIND_FILE(libldap.$ext, $kde_libraries /usr/lib /usr/local/lib /usr/lib64,
+         ldap_libdir)
+       if test -r $ldap_libdir/libldap.$ext ; then

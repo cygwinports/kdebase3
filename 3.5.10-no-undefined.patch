@@ -1,0 +1,173 @@
+--- origsrc/kdebase-3.5.10/kcminit/Makefile.am	2006-05-22 13:12:41.000000000 -0500
++++ src/kdebase-3.5.10/kcminit/Makefile.am	2017-12-26 22:22:05.033347000 -0600
+@@ -23,11 +23,11 @@ lib_LTLIBRARIES=
+ 
+ kcminit_la_SOURCES = main.cpp main.skel
+ kcminit_la_LIBADD = $(LIB_KDEUI) $(LIB_KUTILS)
+-kcminit_la_LDFLAGS = $(all_libraries) -module -avoid-version
++kcminit_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ 
+ kcminit_startup_la_SOURCES = main.cpp main.skel
+ kcminit_startup_la_LIBADD = $(LIB_KDEUI) $(LIB_KUTILS)
+-kcminit_startup_la_LDFLAGS = $(all_libraries) -module -avoid-version
++kcminit_startup_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ 
+ AM_CPPFLAGS = $(all_includes)
+ METASOURCES = AUTO
+--- origsrc/kdebase-3.5.10/kcontrol/access/Makefile.am	2005-09-10 03:25:08.000000000 -0500
++++ src/kdebase-3.5.10/kcontrol/access/Makefile.am	2017-12-26 22:23:15.296399700 -0600
+@@ -8,7 +8,7 @@ kde_module_LTLIBRARIES = kcm_access.la
+ kdeinit_LTLIBRARIES = kaccess.la
+ 
+ kaccess_la_SOURCES = kaccess.cpp main.cpp
+-kaccess_la_LDFLAGS = $(all_libraries) -module -avoid-version
++kaccess_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ kaccess_la_LIBADD = $(LIB_KDEUI)
+ 
+ kcm_access_la_SOURCES = kcmaccess.cpp 
+--- origsrc/kdebase-3.5.10/kcontrol/kcontrol/Makefile.am	2005-10-10 10:03:43.000000000 -0500
++++ src/kdebase-3.5.10/kcontrol/kcontrol/Makefile.am	2017-12-26 22:23:15.312025300 -0600
+@@ -33,7 +33,7 @@ kcontrol_la_SOURCES = main.cpp toplevel.
+ 	proxywidget.cpp kcrootonly.cpp searchwidget.cpp
+ 
+ kcontrol_la_LIBADD  = $(LIB_KDEUI) $(LIB_KUTILS) $(LIB_KHTML)
+-kcontrol_la_LDFLAGS = $(all_libraries) -module -avoid-version
++kcontrol_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ 
+ rccontroldir = $(kde_datadir)/kcontrol
+ rccontrol_DATA = kcontrolui.rc
+--- origsrc/kdebase-3.5.10/kioslave/home/kdedmodule/Makefile.am	2005-09-10 03:25:37.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/home/kdedmodule/Makefile.am	2017-12-27 01:07:39.360555000 -0600
+@@ -4,8 +4,8 @@ METASOURCES = AUTO
+ INCLUDES = $(all_includes)
+ 
+ kded_homedirnotify_la_SOURCES = homedirnotify.cpp homedirnotify.skel homedirnotifymodule.cpp homedirnotifymodule.skel
+-kded_homedirnotify_la_LDFLAGS = $(all_libraries) -module -avoid-version
+-kded_homedirnotify_la_LIBADD = $(LIB_KSYCOCA)
++kded_homedirnotify_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++kded_homedirnotify_la_LIBADD = $(LIB_KDED) $(LIB_KSYCOCA)
+ 
+ 
+ servicesdir = $(kde_servicesdir)/kded
+--- origsrc/kdebase-3.5.10/kioslave/ldap/Makefile.am	2005-09-10 03:25:36.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/ldap/Makefile.am	2017-12-26 22:53:44.480397800 -0600
+@@ -11,7 +11,7 @@ kde_module_LTLIBRARIES = kio_ldap.la
+ 
+ kio_ldap_la_SOURCES = kio_ldap.cpp
+ kio_ldap_la_LIBADD = $(LIB_KIO) $(LDAP_LIBS) $(LIB_KABC)
+-kio_ldap_la_LDFLAGS = $(all_libraries) $(KDE_RPATH) $(LDAP_RPATH) -module $(KDE_PLUGIN)
++kio_ldap_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ 
+ noinst_HEADERS = kio_ldap.h
+ 
+--- origsrc/kdebase-3.5.10/kioslave/media/mediamanager/Makefile.am	2005-09-10 03:25:36.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/media/mediamanager/Makefile.am	2017-12-27 01:05:55.100630000 -0600
+@@ -23,8 +23,8 @@ endif
+ noinst_LTLIBRARIES = $(LINUXCDPOLLING_LIB) $(HALBACKEND_LIB)
+ 
+ kded_mediamanager_la_SOURCES = mediamanager.cpp mediamanager.skel medialist.cpp backendbase.cpp fstabbackend.cpp removablebackend.cpp mediadirnotify.cpp mediadirnotify.skel
+-kded_mediamanager_la_LDFLAGS = $(all_libraries) -module -avoid-version
+-kded_mediamanager_la_LIBADD = $(LIB_KSYCOCA) ../libmediacommon/libmediacommon.la $(HALBACKEND_LIB) $(LINUXCDPOLLING_LIB)
++kded_mediamanager_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++kded_mediamanager_la_LIBADD = $(LIB_KDED) $(LIB_KSYCOCA) ../libmediacommon/libmediacommon.la $(HALBACKEND_LIB) $(LINUXCDPOLLING_LIB)
+ 
+ 
+ servicesdir = $(kde_servicesdir)/kded
+--- origsrc/kdebase-3.5.10/kioslave/media/medianotifier/Makefile.am	2005-09-10 03:25:36.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/media/medianotifier/Makefile.am	2017-12-27 01:06:34.495490500 -0600
+@@ -1,9 +1,9 @@
+ INCLUDES = -I$(srcdir)/../libmediacommon -I../libmediacommon $(all_includes)
+ 
+ kde_module_LTLIBRARIES = kded_medianotifier.la
+-kded_medianotifier_la_LDFLAGS = -module -avoid-version $(all_libraries)
++kded_medianotifier_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ kded_medianotifier_la_LIBADD = ../libmediacommon/libmediacommon.la $(LIB_KDECORE) \
+-                               $(LIB_KDEUI) $(LIB_KIO)
++                               $(LIB_KDEUI) $(LIB_KIO) $(LIB_KDED)
+ kded_medianotifier_la_SOURCES = medianotifier.cpp medianotifier.skel \
+                                 notificationdialog.cpp notificationdialogview.ui
+ 
+--- origsrc/kdebase-3.5.10/kioslave/remote/kdedmodule/Makefile.am	2005-09-10 03:25:37.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/remote/kdedmodule/Makefile.am	2017-12-27 01:07:16.184983200 -0600
+@@ -4,8 +4,8 @@ METASOURCES = AUTO
+ INCLUDES = $(all_includes)
+ 
+ kded_remotedirnotify_la_SOURCES = remotedirnotify.cpp remotedirnotify.skel remotedirnotifymodule.cpp remotedirnotifymodule.skel
+-kded_remotedirnotify_la_LDFLAGS = $(all_libraries) -module -avoid-version
+-kded_remotedirnotify_la_LIBADD = $(LIB_KSYCOCA)
++kded_remotedirnotify_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++kded_remotedirnotify_la_LIBADD = $(LIB_KDED) $(LIB_KSYCOCA)
+ 
+ 
+ servicesdir = $(kde_servicesdir)/kded
+--- origsrc/kdebase-3.5.10/kioslave/system/kdedmodule/Makefile.am	2005-09-10 03:25:37.000000000 -0500
++++ src/kdebase-3.5.10/kioslave/system/kdedmodule/Makefile.am	2017-12-27 01:07:59.905358000 -0600
+@@ -4,8 +4,8 @@ METASOURCES = AUTO
+ INCLUDES = $(all_includes)
+ 
+ kded_systemdirnotify_la_SOURCES = systemdirnotify.cpp systemdirnotify.skel systemdirnotifymodule.cpp systemdirnotifymodule.skel
+-kded_systemdirnotify_la_LDFLAGS = $(all_libraries) -module -avoid-version
+-kded_systemdirnotify_la_LIBADD = $(LIB_KSYCOCA)
++kded_systemdirnotify_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++kded_systemdirnotify_la_LIBADD = $(LIB_KDED) $(LIB_KSYCOCA)
+ 
+ 
+ servicesdir = $(kde_servicesdir)/kded
+--- origsrc/kdebase-3.5.10/konsole/konsole/Makefile.am	2006-03-17 04:17:43.000000000 -0600
++++ src/kdebase-3.5.10/konsole/konsole/Makefile.am	2017-12-27 01:08:44.270836000 -0600
+@@ -33,15 +33,15 @@ fontembedder_LDADD = $(LIB_QT)
+ 
+ # kwrited kded module
+ kded_kwrited_la_SOURCES = kwrited.cpp TEPty.cpp kwrited.skel
+-kded_kwrited_la_LIBADD  = $(LIB_KDECORE) 
+-kded_kwrited_la_LDFLAGS = $(all_libraries) -module -avoid-version
++kded_kwrited_la_LIBADD  = $(LIB_KDED) $(LIB_KDECORE)
++kded_kwrited_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ 
+ # konsole kdeinit module
+ konsole_la_SOURCES = TEPty.cpp BlockArray.cpp main.cpp konsole.cpp schema.cpp session.cpp TEWidget.cpp TEmuVt102.cpp \
+      TEScreen.cpp TEmulation.cpp TEHistory.cpp keytrans.cpp konsoleiface.skel sessioniface.skel \
+      konsole_wcwidth.cpp konsolebookmarkhandler.cpp konsolebookmarkmenu.cpp \
+      zmodem_dialog.cpp printsettings.cpp
+-konsole_la_LDFLAGS = $(all_libraries) -module -avoid-version
++konsole_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
+ konsole_la_LIBADD = $(LIB_KDEUI) $(LIB_KIO) $(LIB_KDEPRINT) $(LIBUTIL) $(XTESTLIB) $(LIB_XRENDER)
+ 
+ # kcmkonsole_SOURCES = kcmkonsole.cpp schema.cpp
+--- origsrc/kdebase-3.5.10/ksmserver/Makefile.am	2006-01-19 11:01:08.000000000 -0600
++++ src/kdebase-3.5.10/ksmserver/Makefile.am	2017-12-27 01:18:48.528619600 -0600
+@@ -30,8 +30,8 @@ ksmserver_la_SOURCES = main.cpp server.c
+ 	legacy.cpp startup.cpp shutdown.cpp client.cpp \
+ 	KSMServerInterface.skel server.skel
+ 
+-ksmserver_la_LDFLAGS = $(all_libraries) -avoid-version -module
+-ksmserver_la_LIBADD = ../kdmlib/libdmctl.la $(LIB_KDEUI)
++ksmserver_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++ksmserver_la_LIBADD = ../kdmlib/libdmctl.la $(LIB_KDEUI) -lICE -lSM
+ 
+ picsdir = $(kde_datadir)/ksmserver/pics
+ pics_DATA = shutdownkonq.png
+--- origsrc/kdebase-3.5.10/libkonq/Makefile.am	2005-10-10 10:04:21.000000000 -0500
++++ src/kdebase-3.5.10/libkonq/Makefile.am	2017-12-27 14:57:02.935411500 -0600
+@@ -21,7 +21,7 @@ SUBDIRS = pics favicons
+ 
+ lib_LTLIBRARIES = libkonq.la
+ libkonq_la_LDFLAGS = $(all_libraries) -version-info 6:0:2 -no-undefined
+-libkonq_la_LIBADD = $(LIB_KPARTS)
++libkonq_la_LIBADD = $(LIB_KPARTS) -lz
+ 
+ libkonq_la_SOURCES = konq_popupmenu.cc knewmenu.cc \
+    konq_xmlguiclient.cc\
+--- origsrc/kdebase-3.5.10/libkonq/favicons/Makefile.am	2005-09-10 03:25:53.000000000 -0500
++++ src/kdebase-3.5.10/libkonq/favicons/Makefile.am	2017-12-26 21:37:32.362666600 -0600
+@@ -2,8 +2,8 @@ kde_module_LTLIBRARIES = kded_favicons.l
+ 
+ INCLUDES = $(all_includes)
+ kded_favicons_la_SOURCES = favicons.cpp favicons.skel
+-kded_favicons_la_LDFLAGS = $(all_libraries) -module -avoid-version
+-kded_favicons_la_LIBADD = $(LIB_KSYCOCA)
++kded_favicons_la_LDFLAGS = $(all_libraries) -module $(KDE_PLUGIN)
++kded_favicons_la_LIBADD = $(LIB_KDED) $(LIB_KSYCOCA)
+ 
+ METASOURCES = AUTO
+ 

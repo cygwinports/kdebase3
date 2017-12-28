@@ -1,0 +1,192 @@
+inherit kde3
+
+NAME="kdebase3"
+VERSION=3.5.10
+RELEASE=11
+CATEGORY="KDE"
+SUMMARY="KDE 3 runtime"
+DESCRIPTION="kdebase is the second mandatory package (besides kdelibs) for the
+K Desktop Environment. Here we have various applications and infrastructure
+files and libraries."
+
+PATCH_URI+="
+	fedora/kdebase-3.3.92-vroot.patch
+	fedora/kdebase-3.x-shortcuts.patch
+	fedora/kdebase-3.2.0-keymap.patch
+	fedora/kdebase-3.1-startpage.patch
+	fedora/kdebase-3.1.3-konsole-double-esc.patch
+	fedora/kdebase-3.3.92-kpersonalizer.patch
+	fedora/kdebase-3.2.92-logo.patch
+	fedora/kdebase-3.4.2-kdesktop-konsole.patch
+	fedora/kdebase-3.5.1-xdg.patch
+	fedora/kdebase-3.5.1-kdm-readme.patch
+	fedora/kdebase-3.5.1-konsole-fonts.patch
+	fedora/kdebase-3.5.2-kconf_update-klipper.patch
+	fedora/kdebase-3.5.5-keyinit.patch
+	fedora/kdebase-3.5.3-khelpcenter-sort.patch
+	fedora/kdebase-3.5.4-htdig.patch
+	fedora/kdebase-3.5.4-tango-icon-theme.patch
+	fedora/kdebase-3.5.4-konqueror-shortcut.patch
+	fedora/kdebase-3.5.6-kdm-alternatebackground.patch
+	fedora/kdebase-3.5.7-kio_media_mounthelper.patch
+	fedora/kdebase-3.5.10-konsolesu-kdesu.patch
+	fedora/kdebase-3.5.9-userdiskmount.patch
+	fedora/kdebase-3.5.10-libkrdb_dep.patch
+	fedora/kdebase-3.5.10-samba4.patch
+	fedora/kdebase-3.5.10-printmanager-desktop-fix.patch
+	fedora/kdebase-3.5.10-minicli-decimal-comma.patch
+	fedora/kdebase-3.5.10-ossl-1.x.patch
+	3.5.10-disable-components.patch
+	3.5.10-libtirpc.patch
+	3.5.10-no-undefined.patch
+	3.5.10-ldap-cygwin.patch
+"
+
+# keep konsole for konsolepart
+DO_NOT_COMPILE="drkonqi kappfinder kcheckpass kate kdepasswd kdeprint kdesktop
+	kdesu kdialog kdm khelpcenter khotkeys kicker klipper kmenuedit
+	knetattach konqueror kpager kpersonalizer kscreensaver ksplashml
+	ksysguard ktip kwin kxkb nsplugins"
+
+PKG_NAMES="${NAME} libkonq4 libkonq4-devel"
+kdebase3_CONTENTS="
+	--exclude=cygkonq-4.dll
+	--exclude=konq_sound.*
+	etc/postinstall/${NAME}.sh
+	usr/bin/*
+	usr/lib/kde3/*.*
+	usr/lib/libkdeinit_*.la
+	usr/share/applications/kde/
+	usr/share/apps/kaccess/
+	usr/share/apps/kbookmark/
+	usr/share/apps/kcm_componentchooser/
+	usr/share/apps/kcmcss/
+	usr/share/apps/kcminput/
+	usr/share/apps/kcmkeys/
+	usr/share/apps/kconf_update/
+	usr/share/apps/kcontrol/
+	usr/share/apps/kdcop/
+	usr/share/apps/kfindpart/
+	usr/share/apps/kinfocenter/
+	usr/share/apps/kio_finger/
+	usr/share/apps/kio_info/
+	usr/share/apps/kio_man/
+	usr/share/apps/konsole/
+	usr/share/apps/systemview/
+	usr/share/config.kcfg/mediamanagersettings.kcfg
+	usr/share/doc/HTML/en/kdcop/
+	usr/share/doc/HTML/en/kompmgr/
+	usr/share/doc/${NAME}
+	usr/share/icons/crystalsvg/*/*/*
+	usr/share/mimelnk/*/*
+	usr/share/services/*
+	usr/share/servicetypes/*
+	usr/share/sounds/KDE_*
+"
+libkonq4_CONTENTS="
+	usr/bin/cygkonq-4.dll
+	usr/lib/kde3/konq_sound.*
+"
+libkonq4_devel_CONTENTS="
+	usr/include/kde3/*.h
+	usr/lib/kde3/devel/libkonq.dll.a
+	usr/lib/libkonq.la
+"
+
+CYGCONF_ARGS="
+	--with-ldap
+	--with-libusb
+	--with-openexr
+	--without-hal
+	--without-krb4 --without-afs
+	--without-libraw1394
+	--without-samba
+"
+
+src_install() {
+	cd ${B}
+	kde3_install
+
+# now in kde-filesystem (see #321771)
+rm -f ${D}/usr/share/applnk/.hidden/.directory
+
+# remove conflicts with kdebase-workspace
+pushd ${D}/usr/bin
+rm -f genkdmconf kaccess kappfinder kapplymousetheme kate kbookmarkmerger \
+      kblankscrn.kss kcheckrunning kcminit kcminit_startup kcontroledit kdebugdialog \
+      kdeinstallktheme kdepasswd kdialog kdm kdmctl keditbookmarks \
+      keditfiletype kfind kfmclient kfontinst kfontview khelpcenter khc_* \
+      khotkeys kinfocenter klipper \
+      kmenuedit konqueror konsole krandom.kss krandrtray kreadconfig ksmserver \
+      ksplashsimple kstart ksysguard ksysguardd ksystraycmd ktip ktrash kwin \
+      kwin_killer_helper kwin_rules_dialog kwrite kwriteconfig kxkb \
+      nspluginscan nspluginviewer startkde kdeeject kcontrol
+popd
+rm -f ${D}/etc/ksysguarddrc
+rm -f ${D}/usr/lib/kconf_update_bin/khotkeys_update
+rm -f ${D}/usr/lib/kconf_update_bin/kwin_update_default_rules
+rm -f ${D}/usr/lib/kconf_update_bin/kwin_update_window_settings
+rm -f ${D}/usr/share/config.kcfg/kcm_useraccount.kcfg
+rm -f ${D}/usr/share/config.kcfg/keditbookmarks.kcfg
+rm -f ${D}/usr/share/config.kcfg/klaunch.kcfg
+rm -f ${D}/usr/share/config.kcfg/konqueror.kcfg
+rm -f ${D}/usr/share/config.kcfg/kwin.kcfg
+rm -f ${D}/usr/share/config/klipperrc
+rm -f ${D}/usr/share/config/kshorturifilterrc
+rm -f ${D}/usr/share/xsessions/kde.desktop
+
+# dups of kde4 services
+rm -f ${D}/usr/share/applications/kde/cookies.desktop
+rm -f ${D}/usr/share/applications/kde/desktop.desktop
+
+# remove docs
+pushd ${D}/usr/share/doc/HTML/en/
+rm -rf kate kcontrol kdebugdialog kdesu kdm kfind khelpcenter kinfocenter \
+       kioslave klipper kmenuedit knetattach konqueror konsole ksysguard \
+       kwrite kxkb
+popd
+# remove .desktop files for apps we don't ship
+pushd ${D}/usr/share/applications/kde/
+rm -f Help.desktop Home.desktop Kfind.desktop installktheme.desktop \
+      kappfinder.desktop kate.desktop kdepasswd.desktop kfmclient.desktop \
+      kfmclient_dir.desktop kfmclient_html.desktop kfmclient_war.desktop \
+      kinfocenter.desktop klipper.desktop kmenuedit.desktop \
+      konqbrowser.desktop konquerorsu.desktop konsole.desktop \
+      konsolesu.desktop krandrtray.desktop ksysguard.desktop ktip.desktop \
+      kwrite.desktop KControl.desktop
+
+sed -i -e "s,^OnlyShowIn=KDE;,OnlyShowIn=KDE3;," *.desktop
+popd
+
+# hicolor
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kappfinder.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kate.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/khelpcenter.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/knetattach.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kfind.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kfm.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/khotkeys.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kmenuedit.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/konqueror.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/konsole.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/ksplash.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/ktip.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kwrite.*
+rm -rf ${D}/usr/share/icons/hicolor/*/apps/kxkb.*
+rm -rf ${D}/usr/share/locale/en_US/
+rm -rf ${D}/usr/share/locale/l10n/
+rm -rf ${D}/usr/share/autostart/*
+rm -rf ${D}/usr/share/desktop-directories/*
+rm -rf ${D}/usr/share/templates/*
+rm -rf ${D}/usr/share/templates/.source/*
+rm -rf ${D}/usr/share/wallpapers/*
+rm -rf ${D}/usr/lib/kconf_update_bin
+rm -rf ${D}/usr/share/fonts
+rm -rf ${D}/usr/share/apps/kdm
+rm -rf ${D}/usr/share/apps/konqueror
+rm -rf ${D}/usr/share/apps/apps/kbookmark
+rm -rf ${D}/usr/share/apps/ksmserver
+rm -rf ${D}/usr/share/applnk
+rm -rf ${D}/etc/xdg/menus/
+
+}
